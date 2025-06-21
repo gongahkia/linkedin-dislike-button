@@ -6,9 +6,7 @@
 
 # `LinkedIn Dislike Button` 👎
 
-"*[If nothing good to say, don't say](#ive-never-heard-this-phrase-in-my-life).*"
-
-React instead.
+"*[If nothing good to say, don't say](#ive-never-heard-this-phrase-in-my-life).*" React instead.
 
 `LinkedIn Dislike Button` is a simple browser extension that does exactly [what it says on the tin](#screenshots).
 
@@ -67,3 +65,5 @@ Perhaps you've heard one of its many variations as listed below.
 * "*[When you don’t have anything good to say, keep your mouth shut](https://www.insidetreasures.com/when-you-dont-have-anything-good-to-say-keep-your-mouth-shut).*"
 * "*[If you can’t say something nice, don’t say anything at all](https://www.govloop.com/community/blog/if-you-cant-say-something-nice-dont-say-anything-at-all/).*"
 * "*[If you don't have something nice to say, don't say anything at all.](https://www.quora.com/The-saying-goes-If-you-dont-have-something-nice-to-say-dont-say-anything-at-all-Is-this-good-advice).*"
+
+Upon further research, I was surprised to discover that the original phrase appears to be attributed to [Thumper](https://bambi.fandom.com/wiki/Thumper), a rabbit and the best friend of [Bambi](https://bambi.fandom.com/wiki/Bambi_(Character)) from the Classic [Disney](https://bambi.fandom.com/wiki/Walt_Disney) Animated Film, [Bambi](https://bambi.fandom.com/wiki/Bambi_(Film)). Thumper sings about it in the song [If You Can't Say Something Nice](https://bambi.fandom.com/wiki/If_You_Can%27t_Say_Something_Nice), of which the referenced excerpt can be found [here](https://youtu.be/9fYngTUZeUQ?feature=shared).
