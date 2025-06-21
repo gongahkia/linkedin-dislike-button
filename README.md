@@ -1,0 +1,69 @@
+> [!IMPORTANT]  
+> This repository is meant as [satire]().  
+> Please find the word defined by [Merriam Webster](https://www.merriam-webster.com/dictionary/satire), [Oxford English Dictionary](https://www.oed.com/dictionary/satire_n?tl=true) and the [Cambridge Dictionary](https://dictionary.cambridge.org/dictionary/english/satire).
+
+[![](https://img.shields.io/badge/linkedin_dislike_button_1.0.0-passing-green)](https://github.com/gongahkia/linkedin-dislike-button/releases/tag/1.0.0) 
+
+# `LinkedIn Dislike Button` 👎
+
+"*[If nothing good to say, don't say](#ive-never-heard-this-phrase-in-my-life).*"
+
+React instead.
+
+`LinkedIn Dislike Button` is a simple browser extension that does exactly [what it says on the tin](#screenshots).
+
+## Stack
+
+* *Frontend*: HTML, CSS
+* *Backend*: JavaScript
+
+## Rationale
+
+...
+
+## Screenshots
+
+...
+
+## Architecture
+
+...
+
+## Usage
+
+1. Clone the repository.
+
+```console
+$ git clone https://github.com/gongahkia/linkedin-dislike-button
+```
+
+Then follow the below instructions for your browser.
+
+### Firefox
+I
+1. Copy and paste this link in the search bar *about:debugging#/runtime/this-firefox*.
+2. Click *load temporary add-on*.
+3. Open the `linkedin-dislike-button` repo, select `manifest.json`.
+4. Click the toggle button to open the `linkedin-dislike-button` browser extension.
+
+### Chrome
+
+1. Copy and paste this link in the search bar *chrome://extensions/*.
+2. Toggle *Developer mode* on.
+3. Click *load unpacked*.
+4. Open the `linkedin-dislike-button` repo, click *select*.
+5. Click the toggle button to open the `linkedin-dislike-button` browser extension.
+
+Support for other browsers like Opera, Vivaldi have not been extensively tested, but this extension should work. Open an issue for further support.
+
+## I've never heard this phrase in my life
+
+Perhaps you've heard one of its many variations as listed below.
+
+* "*[If you have nothing nice to say, don't say anything at all](https://www.reddit.com/r/unpopularopinion/comments/kn0k1k/the_saying_if_you_have_nothing_nice_to_say_dont/).*"
+* "*[If You Have Nothing Nice To Say, Don’t Say It At All](https://medium.com/publishous/if-you-have-nothing-nice-to-say-dont-say-it-at-all-3691aa7bdce8).*"
+* "*[If you can't say anything nice, don't say anything at all](https://www.linkedin.com/pulse/you-cant-say-anything-nice-dont-all-jessica-joan-richards-smmxe/).*"
+* "*[If you have nothing good to say, remain silent](https://www.facebook.com/muftimenk/posts/if-you-have-nothing-good-to-say-remain-silent-each-time-you-open-your-mouth-to-s/10159055816881971/).*"
+* "*[When you don’t have anything good to say, keep your mouth shut](https://www.insidetreasures.com/when-you-dont-have-anything-good-to-say-keep-your-mouth-shut).*"
+* "*[If you can’t say something nice, don’t say anything at all](https://www.govloop.com/community/blog/if-you-cant-say-something-nice-dont-say-anything-at-all/).*"
+* "*[If you don't have something nice to say, don't say anything at all.](https://www.quora.com/The-saying-goes-If-you-dont-have-something-nice-to-say-dont-say-anything-at-all-Is-this-good-advice).*"
