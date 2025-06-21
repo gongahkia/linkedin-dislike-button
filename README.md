@@ -1,27 +1,28 @@
+[![](https://img.shields.io/badge/linkedin_dislike_button_1.0.0-passing-green)](https://github.com/gongahkia/linkedin-dislike-button/releases/tag/1.0.0) 
+
+# `LinkedIn Dislike Button` 👎
+
+
+`LinkedIn Dislike Button` is a simple browser extension that does exactly [what it says on the tin](#screenshots).
+
+## Rationale
+
+We've all heard the phrase, "*[If nothing good to say, don't say](#ive-never-heard-this-phrase-in-my-life).*"  
+
+React instead.
+
 > [!IMPORTANT]  
-> This repository is meant as [satire]().  
+> This repository is meant as ***SATIRE***.  
 > Please find the word defined below.  
 >  
 > * [Merriam Webster](https://www.merriam-webster.com/dictionary/satire)  
 > * [Oxford English Dictionary](https://www.oed.com/dictionary/satire_n?tl=true)  
 > * [Cambridge Dictionary](https://dictionary.cambridge.org/dictionary/english/satire)  
 
-[![](https://img.shields.io/badge/linkedin_dislike_button_1.0.0-passing-green)](https://github.com/gongahkia/linkedin-dislike-button/releases/tag/1.0.0) 
-
-# `LinkedIn Dislike Button` 👎
-
-"*[If nothing good to say, don't say](#ive-never-heard-this-phrase-in-my-life).*" React instead.
-
-`LinkedIn Dislike Button` is a simple browser extension that does exactly [what it says on the tin](#screenshots).
-
 ## Stack
 
 * *Frontend*: HTML, CSS
 * *Backend*: JavaScript
-
-## Rationale
-
-...
 
 ## Screenshots
 
