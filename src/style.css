@@ -1,0 +1,21 @@
+.dislike-button {
+  color: #666666;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.dislike-button:hover {
+  background-color: rgba(152, 30, 50, 0.1);
+  color: #981e32;
+}
+
+.dislike-button span {
+  font-size: 12px;
+  margin-top: 2px;
+}
