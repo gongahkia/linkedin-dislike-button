@@ -1,6 +1,10 @@
 > [!IMPORTANT]  
 > This repository is meant as [satire]().  
-> Please find the word defined by [Merriam Webster](https://www.merriam-webster.com/dictionary/satire), [Oxford English Dictionary](https://www.oed.com/dictionary/satire_n?tl=true) and the [Cambridge Dictionary](https://dictionary.cambridge.org/dictionary/english/satire).
+> Please find the word defined below.  
+>  
+> * [Merriam Webster](https://www.merriam-webster.com/dictionary/satire)  
+> * [Oxford English Dictionary](https://www.oed.com/dictionary/satire_n?tl=true)  
+> * [Cambridge Dictionary](https://dictionary.cambridge.org/dictionary/english/satire)  
 
 [![](https://img.shields.io/badge/linkedin_dislike_button_1.0.0-passing-green)](https://github.com/gongahkia/linkedin-dislike-button/releases/tag/1.0.0) 
 
