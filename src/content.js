@@ -2,13 +2,13 @@ console.log("LinkedIn Dislike Button: Initializing with DOM-specific injection")
 
 window.addEventListener('load', function() {
   function addDislikeButtons() {
-    const reactionBars = document.querySelectorAll('div.feed-shared-social-action-bar');
-    
+    const reactionBars = document.querySelectorAll('div.feed-shared-social-action-bar.feed-shared-social-action-bar--full-width.feed-shared-social-action-bar--has-social-counts');
     if (!reactionBars.length) {
       console.warn('Reaction bar container not found');
       return;
+    } else {
+      console.log(`${reactionBars.length} reaction bar container(s) found`);
     }
-    console.log(`${reactionBars.length} reaction bar container(s) found`);
     reactionBars.forEach(bar => {
       if (bar.querySelector('.dislike-button')) return;
       const reactionSpan = bar.querySelector('span.reactions-react-button.feed-shared-social-action-bar__action-button.feed-shared-social-action-bar--new-padding');
