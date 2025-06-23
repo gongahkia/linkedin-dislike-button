@@ -35,6 +35,7 @@ function addDislikeButtons() {
   });
 }
 
+alert('LOGGING: LinkedIn Dislike Button loaded');
 addDislikeButtons();
 const observer = new MutationObserver(addDislikeButtons);
 observer.observe(document.body, { childList: true, subtree: true });
