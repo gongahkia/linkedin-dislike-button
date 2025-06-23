@@ -4,24 +4,23 @@
   justify-content: center;
   min-width: 60px;
   padding: 4px 0;
-  background: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  color: #666666;
+  background: none !important; /* Remove gray background */
   border: none;
+  color: #666666;
   cursor: pointer;
   font-family: inherit;
   font-size: 1rem;
-  font-weight: 600;
-  transition: color 0.2s, background 0.2s;
+  font-weight: 600; /* Keep text bold */
+  transition: color 0.2s; /* Only transition color */
   border-radius: 4px;
   margin: 0 8px;
+  box-shadow: none !important; /* Remove any shadow */
+  outline: none !important; /* Remove outline */
 }
 
 .dislike-button:hover, .dislike-button:focus {
-  background: #f3f6f8;
-  color: #666666;
-  font-weight: 600;
+  background: none !important; /* Remove hover background */
+  color: #0a66c2; /* LinkedIn blue for hover */
 }
 
 .dislike-icon {
@@ -38,7 +37,7 @@
 
 .dislike-label {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 600; 
   color: inherit;
   vertical-align: middle;
   user-select: none;
