@@ -4,13 +4,13 @@
   justify-content: center;
   min-width: 60px;
   padding: 4px 0;
-  background: none;                 /* No background by default */
+  background: none;                 
   border: none;
   color: #666666;
   cursor: pointer;
   font-family: inherit;
   font-size: 1rem;
-  font-weight: 600;                 /* Bold text */
+  font-weight: 600;                 
   transition: color 0.2s, background 0.2s;
   border-radius: 4px;
   margin: 0 8px;
@@ -19,8 +19,8 @@
 }
 
 .dislike-button:hover, .dislike-button:focus {
-  background: #f3f6f8;              /* Gray background on hover/focus */
-  color: #0a66c2;                   /* LinkedIn blue on hover/focus */
+  background: #f3f6f8;              
+  color: #666666;
 }
 
 .dislike-icon {
