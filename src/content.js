@@ -1,7 +1,10 @@
-// ---- HELPER FUNCTIONS -----
+console.log("LinkedIn Dislike Button: Script initialized");
 
 function addDislikeButtons() {
-  document.querySelectorAll('.feed-shared-update-v2').forEach(post => {
+  const posts = document.querySelectorAll('.feed-shared-update-v2');
+  if (!posts.length) return;
+  
+  posts.forEach(post => {
     if (post.querySelector('.dislike-button')) return;
     
     const reactionsContainer = post.querySelector('.social-details-social-actions');
@@ -17,8 +20,10 @@ function addDislikeButtons() {
     `;
     
     dislikeButton.addEventListener('click', () => {
-      const commentButton = post.querySelector('.social-comments-button');
-      if (commentButton) {
+      try {
+        const commentButton = post.querySelector('.social-comments-button');
+        if (!commentButton) throw new Error('Comment button not found');
+        
         commentButton.click();
         
         setTimeout(() => {
@@ -28,8 +33,12 @@ function addDislikeButtons() {
             commentBox.value = "I dislike this";
             const event = new Event('input', { bubbles: true });
             commentBox.dispatchEvent(event);
+          } else {
+            console.warn('Comment box not found after 300ms');
           }
         }, 300);
+      } catch (error) {
+        console.error('Dislike button error:', error);
       }
     });
     
@@ -37,15 +46,29 @@ function addDislikeButtons() {
   });
 }
 
-// ---- ACTUAL EXECUTION CODE -----
-
-console.log('LinkedIn Dislike Button loaded'); 
+// Initial execution
 addDislikeButtons();
+
+// MutationObserver with error handling
 const observer = new MutationObserver(mutations => {
-  mutations.forEach(mutation => {
-    if (mutation.addedNodes.length) {
-      addDislikeButtons();
-    }
-  });
+  try {
+    mutations.forEach(mutation => {
+      if (mutation.addedNodes.length) {
+        addDislikeButtons();
+      }
+    });
+  } catch (e) {
+    console.error('MutationObserver error:', e);
+  }
 });
-observer.observe(document.body, { childList: true, subtree: true });
+
+try {
+  observer.observe(document.body, { 
+    childList: true, 
+    subtree: true,
+    attributes: false,
+    characterData: false
+  });
+} catch (e) {
+  console.error('Observer initialization failed:', e);
+}
