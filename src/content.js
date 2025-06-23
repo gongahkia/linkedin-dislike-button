@@ -54,18 +54,7 @@ window.addEventListener('load', function() {
             console.log('Comment button found');
           }
           commentButton.click();
-          setTimeout(() => {
-            // const commentBox = post.querySelector('div.comments-comment-box--cr.comments-comment-box--no-avatar');
-            const commentBox = post.querySelector('form.comments-comment-box__form');
-            if (!commentBox) {
-              throw new Error('Comment box not found');
-            } else {
-              commentBox.focus();
-              commentBox.value = "Personally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.";
-              const event = new Event('input', { bubbles: true });
-              commentBox.dispatchEvent(event);
-            }
-          }, 300);
+          alert("Please remember to always be respectful on LinkedIn. Below is a reccomended response.\n\nPersonally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.");
         } catch (error) {
           console.error('Dislike action failed:', error);
         }
