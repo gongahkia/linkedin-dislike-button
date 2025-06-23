@@ -1,3 +1,5 @@
+// ---- HELPER FUNCTIONS -----
+
 function addDislikeButtons() {
   document.querySelectorAll('.feed-shared-update-v2').forEach(post => {
     if (post.querySelector('.dislike-button')) return;
