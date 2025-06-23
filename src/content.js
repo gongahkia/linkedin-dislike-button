@@ -18,11 +18,21 @@ window.addEventListener('load', function() {
       }
       const dislikeButton = document.createElement('div');
       dislikeButton.className = 'dislike-button';
+      // dislikeButton.innerHTML = `
+      //   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      //     <path d="M15 4H5V18H8V21L12 18H15L19 14V4H15ZM17 12.59L14.59 15H12.41L10 17.41V15H7V6H17V12.59Z" fill="currentColor"/>
+      //   </svg>
+      //   <span>Dislike</span>
+      // `;
       dislikeButton.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M15 4H5V18H8V21L12 18H15L19 14V4H15ZM17 12.59L14.59 15H12.41L10 17.41V15H7V6H17V12.59Z" fill="currentColor"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="dislike-icon" style="display:block;">
+          <path d="M10 15V19a2 2 0 0 0 2 2h2.72a2 2 0 0 0 2-1.6l1.38-7A2 2 0 0 0 16.13 10H7.34a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h2.66z"/>
+          <path d="M7 10V5a2 2 0 0 1 2-2h3"/>
         </svg>
-        <span>Dislike</span>
+        <span class="dislike-label">Dislike</span>
       `;
       dislikeButton.addEventListener('click', function() {
         try {
