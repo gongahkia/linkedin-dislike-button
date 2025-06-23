@@ -42,7 +42,11 @@ window.addEventListener('load', function() {
       dislikeButton.addEventListener('click', function() {
         try {
           const post = bar.closest('.feed-shared-update-v2');
-          if (!post) throw new Error('Post container not found');
+          if (!post) {
+            throw new Error('Post container not found');
+          } else {
+            console.log('Post container found');
+          }
           const commentButton = post.querySelector('button.artdeco-button.artdeco-button--muted.artdeco-button--3.artdeco-button--tertiary.ember-view.social-actions-button.comment-button.flex-wrap');
           if (!commentButton){
             throw new Error('Comment button not found');
@@ -51,7 +55,8 @@ window.addEventListener('load', function() {
           }
           commentButton.click();
           setTimeout(() => {
-            const commentBox = post.querySelector('div.comments-comment-box-comment__text-editor');
+            // const commentBox = post.querySelector('div.comments-comment-box--cr.comments-comment-box--no-avatar');
+            const commentBox = post.querySelector('form.comments-comment-box__form');
             if (!commentBox) {
               throw new Error('Comment box not found');
             } else {
