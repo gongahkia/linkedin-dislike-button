@@ -6,7 +6,7 @@
     <img src="./asset/logo/linkedin-dislike-button.png" width=40% height=40%>
 </p>
 
-`LinkedIn Dislike Button` is a simple browser extension that does exactly [what it says on the tin](#screenshots).
+`LinkedIn Dislike Button` is a simple, wholesome browser extension that does exactly [what it says on the tin](#screenshots).
 
 ## Rationale
 
