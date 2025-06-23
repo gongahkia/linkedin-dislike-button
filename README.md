@@ -6,13 +6,11 @@
     <img src="./asset/logo/linkedin-dislike-button.png" width=40% height=40%>
 </p>
 
+We've all heard the phrase, "*[If nothing good to say, don't say](#part-1-ive-never-heard-this-phrase-in-my-life)*". So react instead.
+
 `LinkedIn Dislike Button` is a simple, wholesome browser extension that does exactly [what it says on the tin](#screenshots).
 
-## Rationale
-
-We've all heard the phrase, "*[If nothing good to say, don't say](#part-1-ive-never-heard-this-phrase-in-my-life).*"  
-
-React instead.
+Also ***please note*** the [satire disclaimer](#usage).
 
 ## Stack
 
@@ -21,17 +19,20 @@ React instead.
 
 ## Screenshots
 
+### Added Dislike Button
+
 <div style="display: flex; justify-content: space-between;">
-  <img src="./asset/reference/1.png" width="32%">
-  <img src="./asset/reference/2.png" width="32%">
-  <img src="./asset/reference/3.png" width="32%">
+  <img src="./asset/reference/1.png" width="49%">
+  <img src="./asset/reference/2.png" width="49%">
 </div>
 
-## Architecture
+### Respectfulness Alert
 
-```mermaid
-...
-```
+<img src="./asset/reference/3.png" width="90%">
+
+### Opened Comment Dialog
+
+<img src="./asset/reference/4.png" width="90%">
 
 ## Usage
 
@@ -58,7 +59,7 @@ Then follow the below instructions for your browser.
 1. Copy and paste this link in the search bar *about:debugging#/runtime/this-firefox*.
 2. Click *load temporary add-on*.
 3. Open the `linkedin-dislike-button` repo, select `manifest.json`.
-4. Click the toggle button to open the `linkedin-dislike-button` browser extension.
+4. Open [LinkedIn](https://www.linkedin.com/feed/).
 
 ### Chrome
 
@@ -66,11 +67,68 @@ Then follow the below instructions for your browser.
 2. Toggle *Developer mode* on.
 3. Click *load unpacked*.
 4. Open the `linkedin-dislike-button` repo, click *select*.
-5. Click the toggle button to open the `linkedin-dislike-button` browser extension.
+5. Open [LinkedIn](https://www.linkedin.com/feed/).
 
 Support for other browsers like Opera, Vivaldi have not been extensively tested, but this extension should work. Open an issue for further support.
 
-## Research
+## Architecture
+
+```mermaid
+sequenceDiagram
+    actor User as User
+    participant Browser as Chrome Browser
+    participant CS as Content Script
+    participant LI as LinkedIn DOM
+    participant Ext as Extension Assets
+
+    User->>Browser: Navigates to LinkedIn feed
+    Browser->>CS: Loads content.js
+    activate CS
+    CS->>LI: Waits for page fully loaded
+    LI-->>CS: DOM ready (feed-shared-social-action-bar)
+    CS->>CS: Executes addDislikeButtons()
+    CS->>LI: Queries all .feed-shared-update-v2
+    LI-->>CS: Returns post elements
+    loop For Each Post
+        CS->>LI: Checks for existing .dislike-button
+        CS->>LI: Creates dislike button element
+        CS->>LI: Inserts button after reactionSpan
+    end
+    CS->>Browser: Initializes MutationObserver
+    deactivate CS
+
+    User->>LI: Clicks Dislike button
+    activate LI
+    LI->>CS: Triggers click handler
+    activate CS
+    CS->>LI: Finds closest .feed-shared-update-v2
+    CS->>LI: Queries .social-comments-button
+    CS->>LI: Simulates click on comment button
+    CS->>CS: Sets 300ms timeout
+    CS->>LI: Queries .comments-comment-box__editor
+    CS->>LI: Sets value to predefined message
+    CS->>LI: Dispatches input event
+    deactivate CS
+    deactivate LI
+
+    Note over User,LI: User sees comment box populated<br>with "I dislike this" message
+
+    Browser->>Ext: Loads dislike.png (via chrome.runtime.getURL)
+    Ext-->>LI: Serves image resource
+    Browser->>CS: Applies styles.css
+    CS->>LI: Styles dislike button
+
+    loop On New Posts (MutationObserver)
+        Browser->>LI: Adds new posts via infinite scroll
+        LI-->>CS: MutationObserver triggers
+        activate CS
+        CS->>CS: Re-runs addDislikeButtons()
+        CS->>LI: Adds buttons to new posts
+        deactivate CS
+    end
+```
+
+## Reference
 
 ### Part 1: I've never heard this phrase in my life
 
