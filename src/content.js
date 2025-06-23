@@ -7,6 +7,7 @@ function addDislikeButtons() {
     console.warn('Reaction bar container not found');
     return;
   }
+  console.log(`${reactionBards.length} reaction bar container(s) found`);
   reactionBars.forEach(bar => {
     if (bar.querySelector('.dislike-button')) return;
     const reactionSpan = bar.querySelector('span.reactions-react-button.feed-shared-social-action-bar__action-button.feed-shared-social-action-bar--new-padding');
