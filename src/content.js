@@ -1,6 +1,7 @@
 console.log("LinkedIn Dislike Button: Initializing with DOM-specific injection");
 
 window.addEventListener('load', function() {
+  const dislikeIconUrl = chrome.runtime.getURL("images/dislike.png");
   function addDislikeButtons() {
     const reactionBars = document.querySelectorAll('div.feed-shared-social-action-bar.feed-shared-social-action-bar--full-width.feed-shared-social-action-bar--has-social-counts');
     if (!reactionBars.length) {
@@ -24,14 +25,18 @@ window.addEventListener('load', function() {
       //   </svg>
       //   <span>Dislike</span>
       // `;
+      // dislikeButton.innerHTML = `
+      //   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+      //       viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+      //       stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      //       class="dislike-icon" style="display:block;">
+      //     <path d="M10 15V19a2 2 0 0 0 2 2h2.72a2 2 0 0 0 2-1.6l1.38-7A2 2 0 0 0 16.13 10H7.34a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h2.66z"/>
+      //     <path d="M7 10V5a2 2 0 0 1 2-2h3"/>
+      //   </svg>
+      //   <span class="dislike-label">Dislike</span>
+      // `;
       dislikeButton.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-            viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="dislike-icon" style="display:block;">
-          <path d="M10 15V19a2 2 0 0 0 2 2h2.72a2 2 0 0 0 2-1.6l1.38-7A2 2 0 0 0 16.13 10H7.34a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h2.66z"/>
-          <path d="M7 10V5a2 2 0 0 1 2-2h3"/>
-        </svg>
+        <img src="${dislikeIconUrl}" alt="Dislike" class="dislike-icon" />
         <span class="dislike-label">Dislike</span>
       `;
       dislikeButton.addEventListener('click', function() {
