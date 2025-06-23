@@ -43,14 +43,20 @@ window.addEventListener('load', function() {
         try {
           const post = bar.closest('.feed-shared-update-v2');
           if (!post) throw new Error('Post container not found');
-          const commentButton = post.querySelector('.social-comments-button');
-          if (!commentButton) throw new Error('Comment button not found');
+          const commentButton = post.querySelector('button.artdeco-button.artdeco-button--muted.artdeco-button--3.artdeco-button--tertiary.ember-view.social-actions-button.comment-button.flex-wrap');
+          if (!commentButton){
+            throw new Error('Comment button not found');
+          } else {
+            console.log('Comment button found');
+          }
           commentButton.click();
           setTimeout(() => {
-            const commentBox = post.querySelector('.comments-comment-box__editor');
-            if (commentBox) {
+            const commentBox = post.querySelector('div.comments-comment-box-comment__text-editor');
+            if (!commentBox) {
+              throw new Error('Comment box not found');
+            } else {
               commentBox.focus();
-              commentBox.value = "I dislike this";
+              commentBox.value = "Personally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.";
               const event = new Event('input', { bubbles: true });
               commentBox.dispatchEvent(event);
             }
