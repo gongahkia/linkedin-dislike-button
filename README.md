@@ -8,7 +8,7 @@
 
 We've all heard the phrase, "*[If nothing good to say, don't say](#part-1-ive-never-heard-this-phrase-in-my-life)*". So react instead.
 
-`LinkedIn Dislike Button` is a simple, wholesome browser extension that does exactly [what it says on the tin](#screenshots).
+`LinkedIn Dislike Button` is a wholesome and harmless browser extension that does exactly [what it says on the tin](#screenshots).
 
 Also ***please note*** the [satire disclaimer](#usage).
 
