@@ -1,21 +1,41 @@
 .dislike-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  padding: 4px 0;
+  background: none;
+  border: none;
   color: #666666;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 12px;
-  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: color 0.2s, background 0.2s;
   border-radius: 4px;
-  transition: background-color 0.2s;
+  margin: 0 8px;
 }
 
-.dislike-button:hover {
-  background-color: rgba(152, 30, 50, 0.1);
-  color: #981e32;
+.dislike-button:hover, .dislike-button:focus {
+  background: #f3f6f8;
+  color: #0a66c2;
 }
 
-.dislike-button span {
-  font-size: 12px;
-  margin-top: 2px;
+.dislike-icon {
+  margin-right: 6px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  filter: grayscale(1) brightness(0.5);
+}
+
+.dislike-button:hover .dislike-icon {
+  filter: none;
+}
+
+.dislike-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: inherit;
+  vertical-align: middle;
+  user-select: none;
 }
