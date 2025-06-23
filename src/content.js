@@ -1,15 +1,19 @@
-console.log("LinkedIn Dislike Button: Script initialized");
+console.log("LinkedIn Dislike Button: Initializing with DOM-specific injection");
 
 function addDislikeButtons() {
-  const posts = document.querySelectorAll('.feed-shared-update-v2');
-  if (!posts.length) return;
+  const reactionBars = document.querySelectorAll('div.feed-shared-social-action-bar.feed-shared-social-action-bar--full-width.feed-shared-social-action-bar--has-identity-toggle.feed-shared-social-action-bar--has-social-counts');
   
-  posts.forEach(post => {
-    if (post.querySelector('.dislike-button')) return;
-    
-    const reactionsContainer = post.querySelector('.social-details-social-actions');
-    if (!reactionsContainer) return;
-    
+  if (!reactionBars.length) {
+    console.warn('Reaction bar container not found');
+    return;
+  }
+  reactionBars.forEach(bar => {
+    if (bar.querySelector('.dislike-button')) return;
+    const reactionSpan = bar.querySelector('span.reactions-react-button.feed-shared-social-action-bar__action-button.feed-shared-social-action-bar--new-padding');
+    if (!reactionSpan) {
+      console.warn('Reaction span not found in container');
+      return;
+    }
     const dislikeButton = document.createElement('div');
     dislikeButton.className = 'dislike-button';
     dislikeButton.innerHTML = `
@@ -18,14 +22,13 @@ function addDislikeButtons() {
       </svg>
       <span>Dislike</span>
     `;
-    
-    dislikeButton.addEventListener('click', () => {
+    dislikeButton.addEventListener('click', function() {
       try {
+        const post = bar.closest('.feed-shared-update-v2');
+        if (!post) throw new Error('Post container not found');
         const commentButton = post.querySelector('.social-comments-button');
         if (!commentButton) throw new Error('Comment button not found');
-        
         commentButton.click();
-        
         setTimeout(() => {
           const commentBox = post.querySelector('.comments-comment-box__editor');
           if (commentBox) {
@@ -33,42 +36,29 @@ function addDislikeButtons() {
             commentBox.value = "I dislike this";
             const event = new Event('input', { bubbles: true });
             commentBox.dispatchEvent(event);
-          } else {
-            console.warn('Comment box not found after 300ms');
           }
         }, 300);
       } catch (error) {
-        console.error('Dislike button error:', error);
+        console.error('Dislike action failed:', error);
       }
     });
-    
-    reactionsContainer.appendChild(dislikeButton);
+    reactionSpan.parentNode.insertBefore(dislikeButton, reactionSpan.nextSibling);
   });
 }
 
-// Initial execution
+// ----- Execution -----
+
 addDislikeButtons();
-
-// MutationObserver with error handling
 const observer = new MutationObserver(mutations => {
-  try {
-    mutations.forEach(mutation => {
-      if (mutation.addedNodes.length) {
-        addDislikeButtons();
-      }
-    });
-  } catch (e) {
-    console.error('MutationObserver error:', e);
-  }
-});
-
-try {
-  observer.observe(document.body, { 
-    childList: true, 
-    subtree: true,
-    attributes: false,
-    characterData: false
+  mutations.forEach(mutation => {
+    if (mutation.addedNodes.length) {
+      addDislikeButtons();
+    }
   });
-} catch (e) {
-  console.error('Observer initialization failed:', e);
-}
+});
+observer.observe(document.body, {
+  childList: true,
+  subtree: true,
+  attributes: false,
+  characterData: false
+});
