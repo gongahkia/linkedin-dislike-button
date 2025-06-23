@@ -1,7 +1,7 @@
 console.log("LinkedIn Dislike Button: Initializing with DOM-specific injection");
 
 function addDislikeButtons() {
-  const reactionBars = document.querySelectorAll('div.feed-shared-social-action-bar.feed-shared-social-action-bar--full-width.feed-shared-social-action-bar--has-identity-toggle.feed-shared-social-action-bar--has-social-counts');
+  const reactionBars = document.querySelectorAll('div.feed-shared-social-action-bar');
   
   if (!reactionBars.length) {
     console.warn('Reaction bar container not found');
@@ -48,7 +48,6 @@ function addDislikeButtons() {
 
 // ----- Execution -----
 
-console.log("BALLS");
 addDislikeButtons();
 const observer = new MutationObserver(mutations => {
   mutations.forEach(mutation => {
