@@ -10,7 +10,7 @@
 
 ## Rationale
 
-We've all heard the phrase, "*[If nothing good to say, don't say](#ive-never-heard-this-phrase-in-my-life).*"  
+We've all heard the phrase, "*[If nothing good to say, don't say](#part-1-ive-never-heard-this-phrase-in-my-life).*"  
 
 React instead.
 
