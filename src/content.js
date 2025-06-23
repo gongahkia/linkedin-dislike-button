@@ -35,7 +35,15 @@ function addDislikeButtons() {
   });
 }
 
-alert('LOGGING: LinkedIn Dislike Button loaded');
+// ---- ACTUAL EXECUTION CODE -----
+
+console.log('LinkedIn Dislike Button loaded'); 
 addDislikeButtons();
-const observer = new MutationObserver(addDislikeButtons);
+const observer = new MutationObserver(mutations => {
+  mutations.forEach(mutation => {
+    if (mutation.addedNodes.length) {
+      addDislikeButtons();
+    }
+  });
+});
 observer.observe(document.body, { childList: true, subtree: true });
