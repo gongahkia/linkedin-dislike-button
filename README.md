@@ -1,7 +1,10 @@
 [![](https://img.shields.io/badge/linkedin_dislike_button_1.0.0-passing-green)](https://github.com/gongahkia/linkedin-dislike-button/releases/tag/1.0.0) 
 
-# `LinkedIn Dislike Button` 👎
+# `LinkedIn Dislike Button`
 
+<p align="center">
+    <img src="./asset/logo/linkedin-dislike-button.png" width=40% height=40%>
+</p>
 
 `LinkedIn Dislike Button` is a simple browser extension that does exactly [what it says on the tin](#screenshots).
 
@@ -18,11 +21,17 @@ React instead.
 
 ## Screenshots
 
-...
+<div style="display: flex; justify-content: space-between;">
+  <img src="./asset/reference/1.png" width="32%">
+  <img src="./asset/reference/2.png" width="32%">
+  <img src="./asset/reference/3.png" width="32%">
+</div>
 
 ## Architecture
 
+```mermaid
 ...
+```
 
 ## Usage
 
@@ -61,7 +70,9 @@ Then follow the below instructions for your browser.
 
 Support for other browsers like Opera, Vivaldi have not been extensively tested, but this extension should work. Open an issue for further support.
 
-## I've never heard this phrase in my life
+## Research
+
+### Part 1: I've never heard this phrase in my life
 
 Perhaps you've heard one of its many variations as listed below.
 
@@ -73,7 +84,11 @@ Perhaps you've heard one of its many variations as listed below.
 * "*[If you can’t say something nice, don’t say anything at all](https://www.govloop.com/community/blog/if-you-cant-say-something-nice-dont-say-anything-at-all/).*"
 * "*[If you don't have something nice to say, don't say anything at all.](https://www.quora.com/The-saying-goes-If-you-dont-have-something-nice-to-say-dont-say-anything-at-all-Is-this-good-advice).*"
 
-Upon further research, I was surprised to discover that the original phrase appears to be attributed to [Thumper](https://bambi.fandom.com/wiki/Thumper), a rabbit and the best friend of [Bambi](https://bambi.fandom.com/wiki/Bambi_(Character)) from the Classic [Disney](https://bambi.fandom.com/wiki/Walt_Disney) Animated Film, [Bambi](https://bambi.fandom.com/wiki/Bambi_(Film)). Thumper sings about it in the song [If You Can't Say Something Nice](https://bambi.fandom.com/wiki/If_You_Can%27t_Say_Something_Nice), of which the referenced excerpt can be found [here](https://youtu.be/9fYngTUZeUQ?feature=shared).
+### Part 2: Going down the literal rabbit hole
+
+Upon further research, I was surprised to discover that the original phrase appears to be attributed to [Thumper](https://bambi.fandom.com/wiki/Thumper), a rabbit and the best friend of [Bambi](https://bambi.fandom.com/wiki/Bambi_(Character)) from the Classic [Disney](https://bambi.fandom.com/wiki/Walt_Disney) Animated Film, [Bambi](https://bambi.fandom.com/wiki/Bambi_(Film)).  
+
+Thumper sings about it in the song [If You Can't Say Something Nice](https://bambi.fandom.com/wiki/If_You_Can%27t_Say_Something_Nice), of which the referenced excerpt can be found [here](https://youtu.be/9fYngTUZeUQ?feature=shared).
 
 <div align="center">
     <img src="./asset/reference/thumper.png" width="35%">
