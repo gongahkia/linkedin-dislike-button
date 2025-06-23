@@ -48,6 +48,7 @@ function addDislikeButtons() {
 
 // ----- Execution -----
 
+console.log("BALLS");
 addDislikeButtons();
 const observer = new MutationObserver(mutations => {
   mutations.forEach(mutation => {
