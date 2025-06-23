@@ -54,7 +54,7 @@ window.addEventListener('load', function() {
             console.log('Comment button found');
           }
           commentButton.click();
-          alert("Please remember to always be respectful on LinkedIn. Below is a reccomended response.\n\nPersonally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.");
+          alert("LinkedIn Dislike Button Browser Extension 👎\n\nPlease remember to always be respectful on LinkedIn. 🙏\n\n💬 Below is a recommended response: \n\n'Personally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.'");
         } catch (error) {
           console.error('Dislike action failed:', error);
         }
