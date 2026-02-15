@@ -1,3 +1,4 @@
+const api = (typeof browser !== 'undefined') ? browser : chrome;
 console.log("LinkedIn Dislike Button: Initializing with DOM-specific injection");
 
 function showToast(title, body) {
@@ -18,7 +19,7 @@ function showToast(title, body) {
 }
 
 window.addEventListener('load', function() {
-  const dislikeIconUrl = chrome.runtime.getURL("images/dislike.png");
+  const dislikeIconUrl = api.runtime.getURL("images/dislike.png");
   function addDislikeButtons() {
     const reactionBars = document.querySelectorAll('div.feed-shared-social-action-bar.feed-shared-social-action-bar--full-width.feed-shared-social-action-bar--has-social-counts');
     if (!reactionBars.length) {
