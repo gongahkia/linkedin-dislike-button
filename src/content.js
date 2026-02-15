@@ -1,5 +1,22 @@
 console.log("LinkedIn Dislike Button: Initializing with DOM-specific injection");
 
+function showToast(title, body) {
+  let toast = document.querySelector('.ldb-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'ldb-toast';
+    toast.innerHTML = '<div class="ldb-toast-title"></div><div class="ldb-toast-body"></div>';
+    document.body.appendChild(toast);
+  }
+  toast.querySelector('.ldb-toast-title').textContent = title;
+  toast.querySelector('.ldb-toast-body').textContent = body;
+  requestAnimationFrame(() => toast.classList.add('ldb-toast--visible'));
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => {
+    toast.classList.remove('ldb-toast--visible');
+  }, 5000);
+}
+
 window.addEventListener('load', function() {
   const dislikeIconUrl = chrome.runtime.getURL("images/dislike.png");
   function addDislikeButtons() {
@@ -54,7 +71,7 @@ window.addEventListener('load', function() {
             console.log('Comment button found');
           }
           commentButton.click();
-          alert("🚨 LINKEDIN DISLIKE BUTTON BROWSER EXTENSION NOTIFICATION 🚨\n\n🙏 Please remember to always be respectful on LinkedIn.\n\n💬 Below is a recommended response: \n\n'Personally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.'");
+          showToast("Please remember to always be respectful on LinkedIn.", "Personally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.");
         } catch (error) {
           console.error('Dislike action failed:', error);
         }

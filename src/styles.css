@@ -40,8 +40,43 @@
 
 .dislike-label {
   font-size: 14px;
-  font-weight: 600;                 
+  font-weight: 600;
   color: inherit;
   vertical-align: middle;
   user-select: none;
+}
+
+.ldb-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  max-width: 400px;
+  padding: 16px 20px;
+  background: #1d2226;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 10000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+.ldb-toast.ldb-toast--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.ldb-toast-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.ldb-toast-body {
+  font-weight: 400;
+  font-size: 13px;
+  color: #ccc;
 }
