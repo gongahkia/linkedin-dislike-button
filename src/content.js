@@ -72,6 +72,20 @@ window.addEventListener('load', function() {
           }
           commentButton.click();
           showToast("Please remember to always be respectful on LinkedIn.", "Personally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.");
+          const dislikeMsg = "Personally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.";
+          let attempts = 0;
+          const pollEditor = setInterval(() => {
+            const editor = post.querySelector('[contenteditable="true"]');
+            if (editor) {
+              clearInterval(pollEditor);
+              editor.focus();
+              editor.innerHTML = '<p>' + dislikeMsg + '</p>';
+              editor.dispatchEvent(new InputEvent('input', {bubbles: true}));
+            } else if (++attempts > 10) {
+              clearInterval(pollEditor);
+              console.warn('Comment editor not found after polling');
+            }
+          }, 300);
         } catch (error) {
           console.error('Dislike action failed:', error);
         }
