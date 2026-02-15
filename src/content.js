@@ -170,14 +170,14 @@ window.addEventListener('load', function() {
   addDislikeButtons();
   addCommentDislikeButtons();
   addArticleDislikeButtons();
-  const observer = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-      if (mutation.addedNodes.length) {
-        addDislikeButtons();
-        addCommentDislikeButtons();
-        addArticleDislikeButtons();
-      }
-    });
+  let debounceTimer = null;
+  const observer = new MutationObserver(() => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      addDislikeButtons();
+      addCommentDislikeButtons();
+      addArticleDislikeButtons();
+    }, 200);
   });
   observer.observe(document.body, {
     childList: true,
