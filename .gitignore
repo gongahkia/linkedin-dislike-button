@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+*.log
+dist/
+web-ext-artifacts/
+.env
+*.crx
+*.pem
+*.zip
