@@ -1,4 +1,5 @@
-[![](https://img.shields.io/badge/linkedin_dislike_button_1.0.0-passing-green)](https://github.com/gongahkia/linkedin-dislike-button/releases/tag/1.0.0) 
+[![](https://img.shields.io/badge/linkedin_dislike_button_1.0.0-passing-light_green)](https://github.com/gongahkia/linkedin-dislike-button/releases/tag/1.0.0) 
+[![](https://img.shields.io/badge/linkedin_dislike_button_2.0.0-passing-green)](https://github.com/gongahkia/linkedin-dislike-button/releases/tag/2.0.0) 
 
 # `LinkedIn Dislike Button`
 
