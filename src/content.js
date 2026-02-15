@@ -130,14 +130,51 @@ window.addEventListener('load', function() {
     });
   }
 
+  function addArticleDislikeButtons() {
+    if (!window.location.pathname.startsWith('/pulse/')) return;
+    const articleBars = document.querySelectorAll('.reader-social-bar, .social-actions-bar, .article-social-actions');
+    articleBars.forEach(bar => {
+      if (bar.querySelector('.dislike-button')) return;
+      const dislikeButton = document.createElement('div');
+      dislikeButton.className = 'dislike-button';
+      dislikeButton.innerHTML = `
+        <img src="${dislikeIconUrl}" alt="Dislike" class="dislike-icon" />
+        <span class="dislike-label">Dislike</span>
+      `;
+      dislikeButton.addEventListener('click', function() {
+        showToast("Please remember to always be respectful on LinkedIn.", "Personally, respectfully, I do not enjoy this article very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.");
+        const commentBtn = bar.querySelector('button[aria-label*="Comment"], button[aria-label*="comment"]');
+        if (commentBtn) {
+          commentBtn.click();
+          const dislikeMsg = "Personally, respectfully, I do not enjoy this article very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.";
+          let attempts = 0;
+          const pollEditor = setInterval(() => {
+            const editor = document.querySelector('[contenteditable="true"]');
+            if (editor) {
+              clearInterval(pollEditor);
+              editor.focus();
+              editor.innerHTML = '<p>' + dislikeMsg + '</p>';
+              editor.dispatchEvent(new InputEvent('input', {bubbles: true}));
+            } else if (++attempts > 10) {
+              clearInterval(pollEditor);
+            }
+          }, 300);
+        }
+      });
+      bar.appendChild(dislikeButton);
+    });
+  }
+
   // ----- Execution -----
   addDislikeButtons();
   addCommentDislikeButtons();
+  addArticleDislikeButtons();
   const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
       if (mutation.addedNodes.length) {
         addDislikeButtons();
         addCommentDislikeButtons();
+        addArticleDislikeButtons();
       }
     });
   });
