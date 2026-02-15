@@ -46,6 +46,22 @@
   user-select: none;
 }
 
+.dislike-button--comment {
+  flex-direction: row;
+  min-width: auto;
+  padding: 2px 6px;
+  margin: 0 4px;
+  font-size: 12px;
+}
+.dislike-button--comment .dislike-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+}
+.dislike-button--comment .dislike-label {
+  font-size: 12px;
+}
+
 .ldb-toast {
   position: fixed;
   bottom: 24px;
