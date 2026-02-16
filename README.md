@@ -20,20 +20,39 @@ Also ***please note*** the [satire disclaimer](#usage).
 
 ## Screenshots
 
-### Added Dislike Button
+### V1.0.0
+
+#### Added Dislike Button
 
 <div style="display: flex; justify-content: space-between;">
   <img src="./asset/reference/1.png" width="49%">
   <img src="./asset/reference/2.png" width="49%">
 </div>
 
-### Respectfulness Alert
+#### Respectfulness Alert
 
-<img src="./asset/reference/3.png" width="90%">
+<img src="./asset/reference/3.png" width="50%">
 
-### Opened Comment Dialog
+#### Opened Comment Dialog
 
 <img src="./asset/reference/4.png" width="90%">
+
+### V2.0.0
+
+#### Added Dislike Button
+
+<div style="display: flex; justify-content: space-between;">
+  <img src="./asset/reference/5.png" width="49%">
+  <img src="./asset/reference/6.png" width="49%">
+</div>
+
+#### Respectfulness Toast Alert
+
+<img src="./asset/reference/7.png" width="90%">
+
+#### Filled Comment Dialog
+
+<img src="./asset/reference/8.png" width="70%">
 
 ## Usage
 
