@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    >
+    <title>Respectful Reaction Button</title>
+    <link rel="stylesheet" href="popup.css">
+    <script src="popup.js" defer></script>
+  </head>
+  <body>
+    <main class="popup">
+      <section class="hero">
+        <p class="eyebrow">Draft-only browser action</p>
+        <h1>Respectful Reaction Button</h1>
+        <p class="summary">
+          Adds a draft-only reaction action on linkedin.com. It opens the native
+          composer, fills a respectful draft locally, and never posts automatically.
+        </p>
+      </section>
+
+      <section class="settings" aria-labelledby="settings-title">
+        <div class="section-heading">
+          <h2 id="settings-title">Injection Settings</h2>
+          <p>Turn the feature on globally or by supported surface.</p>
+        </div>
+
+        <label class="toggle">
+          <span class="toggle__copy">
+            <span class="toggle__title">Enable extension</span>
+            <span class="toggle__body">Only runs on linkedin.com pages.</span>
+          </span>
+          <input id="enabled" type="checkbox">
+        </label>
+
+        <label class="toggle">
+          <span class="toggle__copy">
+            <span class="toggle__title">Feed posts</span>
+            <span class="toggle__body">Adds the draft action beside post controls.</span>
+          </span>
+          <input id="surface-posts" type="checkbox">
+        </label>
+
+        <label class="toggle">
+          <span class="toggle__copy">
+            <span class="toggle__title">Comment replies</span>
+            <span class="toggle__body">Adds the draft action beside reply controls.</span>
+          </span>
+          <input id="surface-comments" type="checkbox">
+        </label>
+
+        <label class="toggle">
+          <span class="toggle__copy">
+            <span class="toggle__title">Article pages</span>
+            <span class="toggle__body">Adds the draft action on supported article views.</span>
+          </span>
+          <input id="surface-articles" type="checkbox">
+        </label>
+      </section>
+
+      <section class="disclosure" aria-labelledby="disclosure-title">
+        <h2 id="disclosure-title">Privacy and Reviewer Notes</h2>
+        <p>
+          Page analysis stays local in the browser. This extension does not transmit,
+          sell, or auto-submit LinkedIn content.
+        </p>
+        <nav class="links" aria-label="Documentation links">
+          <a id="help-link" href="#" target="_blank" rel="noreferrer">Help</a>
+          <a id="privacy-link" href="#" target="_blank" rel="noreferrer">Privacy</a>
+          <a id="audit-link" href="#" target="_blank" rel="noreferrer">Audit</a>
+          <a
+            id="support-link"
+            href="https://github.com/gongahkia/linkedin-dislike-button/issues"
+            target="_blank"
+            rel="noreferrer"
+          >Support</a>
+        </nav>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="../Style.css">
+    <script src="../Script.js" defer></script>
+</head>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <img src="../Icon.png" width="96" height="96" alt="Respectful Reaction Button icon">
+            <p class="eyebrow">macOS host app</p>
+            <h1>Respectful Reaction Button</h1>
+            <p class="lede">
+                A draft-only Safari extension for linkedin.com. It opens LinkedIn's native composer,
+                inserts a respectful draft locally, and never posts automatically.
+            </p>
+        </section>
+
+        <section class="status-card">
+            <p class="status-label">Extension status</p>
+            <p class="status-copy state-unknown">You can turn on the extension in Safari extension settings.</p>
+            <p class="status-copy state-on">The extension is on. You can turn it off from Safari extension settings.</p>
+            <p class="status-copy state-off">The extension is off. Turn it on from Safari extension settings to use it on linkedin.com.</p>
+            <button class="primary open-preferences" data-message="open-preferences">
+                Open Safari Extension Settings
+            </button>
+        </section>
+
+        <section class="info-grid">
+            <article class="card">
+                <h2>What it does</h2>
+                <p>
+                    Adds a clearly labeled <strong>Dislike Draft</strong> button on supported posts,
+                    comments, and article pages so the user can draft a respectful reply for review.
+                </p>
+            </article>
+
+            <article class="card">
+                <h2>What it does not do</h2>
+                <p>
+                    It does not auto-submit content, collect analytics, transmit LinkedIn page data,
+                    or run anywhere outside linkedin.com.
+                </p>
+            </article>
+        </section>
+
+        <section class="link-card">
+            <h2>Docs and support</h2>
+            <p>
+                Use the links below for privacy, audit notes, and repository support information.
+            </p>
+            <div class="actions">
+                <button class="secondary" data-message="open-docs">Help</button>
+                <button class="secondary" data-message="open-privacy">Privacy</button>
+                <button class="secondary" data-message="open-audit">Audit</button>
+                <button class="secondary" data-message="open-support">Support</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

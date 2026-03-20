@@ -1,0 +1,18 @@
+Respectful Reaction Button is an unofficial draft-only helper for linkedin.com.
+
+It runs only on https://www.linkedin.com/* and injects a clearly labeled "Dislike Draft" control on supported post, comment, and article surfaces. Clicking the control opens LinkedIn's native composer locally and inserts a respectful draft for the user to review. It never auto-submits content.
+
+The add-on does not transmit page data, collect analytics, or use remote configuration. The only persisted data is local extension preference data stored through the storage permission:
+- global enablement on or off
+- whether post draft injection is enabled
+- whether comment draft injection is enabled
+- whether article draft injection is enabled
+
+Testing path:
+1. Install the add-on.
+2. Open linkedin.com while signed in.
+3. Visit a feed post, a comment thread, or a supported article page.
+4. Confirm the "Dislike Draft" control appears once on the supported surface.
+5. Click it and confirm Firefox opens LinkedIn's native composer and inserts a draft, but does not post automatically.
+
+This add-on uses browser_specific_settings.gecko.data_collection_permissions.required = ["none"] because no data leaves the extension.

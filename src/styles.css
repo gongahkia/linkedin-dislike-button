@@ -1,98 +1,106 @@
-.dislike-button {
+:root {
+  --ldb-ink: #10253f;
+  --ldb-accent: #cf623d;
+  --ldb-accent-soft: rgba(207, 98, 61, 0.14);
+  --ldb-border: rgba(16, 37, 63, 0.12);
+  --ldb-surface: #fffdf9;
+  --ldb-surface-strong: #1b2430;
+}
+
+.ldb-button {
   display: inline-flex;
   align-items: center;
-  flex-direction: column;      
   justify-content: center;
-  min-width: 60px;
-  padding: 4px 0;
-  background: none;                 
-  border: none;
-  color: #666666;
+  gap: 6px;
+  min-width: 118px;
+  margin: 0 6px;
+  padding: 8px 10px;
+  border: 1px solid var(--ldb-border);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffffff 0%, #fff7ef 100%);
+  color: var(--ldb-ink);
   cursor: pointer;
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 600;                 
-  transition: color 0.2s, background 0.2s;
-  border-radius: 4px;
-  margin: 0 8px;
-  box-shadow: none;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.ldb-button:hover,
+.ldb-button:focus-visible {
+  background: linear-gradient(180deg, #fff7ef 0%, #ffe8d7 100%);
+  border-color: rgba(207, 98, 61, 0.32);
+  color: var(--ldb-accent);
   outline: none;
+  transform: translateY(-1px);
 }
 
-.dislike-button:hover, .dislike-button:focus {
-  background: #f3f6f8;              
-  color: #666666;
+.ldb-button:active {
+  transform: translateY(0);
 }
 
-.dislike-icon {
-  margin-right: 6px;
-  width: 20px;
-  height: 20px;
-  vertical-align: middle;
-  filter: grayscale(1) brightness(0.5);
-  transition: filter 0.1s;
+.ldb-button__icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
 }
 
-.dislike-button:hover .dislike-icon,
-.dislike-button:focus .dislike-icon {
-  filter: none;
+.ldb-button__label {
+  white-space: nowrap;
 }
 
-.dislike-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: inherit;
-  vertical-align: middle;
-  user-select: none;
-}
-
-.dislike-button--comment {
-  flex-direction: row;
+.ldb-button--comment {
   min-width: auto;
-  padding: 2px 6px;
-  margin: 0 4px;
+  padding: 5px 8px;
   font-size: 12px;
 }
-.dislike-button--comment .dislike-icon {
+
+.ldb-button--comment .ldb-button__icon {
   width: 14px;
   height: 14px;
-  margin-right: 4px;
-}
-.dislike-button--comment .dislike-label {
-  font-size: 12px;
 }
 
 .ldb-toast {
   position: fixed;
-  bottom: 24px;
   left: 24px;
-  max-width: 400px;
-  padding: 16px 20px;
-  background: #1d2226;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 14px;
-  line-height: 1.4;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  bottom: 24px;
   z-index: 10000;
+  max-width: 360px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.08), transparent 48%),
+    linear-gradient(160deg, #101720 0%, #253247 100%);
+  color: #f5f1e8;
+  box-shadow: 0 18px 40px rgba(7, 13, 19, 0.32);
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.3s, transform 0.3s;
   pointer-events: none;
+  transform: translateY(18px);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
 }
+
 .ldb-toast.ldb-toast--visible {
   opacity: 1;
   transform: translateY(0);
-  pointer-events: auto;
 }
+
 .ldb-toast-title {
-  font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   font-size: 14px;
+  font-weight: 700;
 }
+
 .ldb-toast-body {
-  font-weight: 400;
+  color: rgba(245, 241, 232, 0.82);
   font-size: 13px;
-  color: #ccc;
+  line-height: 1.45;
 }

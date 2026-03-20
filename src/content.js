@@ -1,170 +1,478 @@
-const api = (typeof browser !== 'undefined') ? browser : chrome;
-console.log("LinkedIn Dislike Button: Initializing with DOM-specific injection");
+const api = typeof browser !== "undefined" ? browser : chrome;
 const dislikeIconUrl = api.runtime.getURL("images/dislike.png");
 
+const DEFAULT_SETTINGS = Object.freeze({
+  enabled: true,
+  surfaces: {
+    posts: true,
+    comments: true,
+    articles: true
+  }
+});
+
+const COPY = Object.freeze({
+  label: "Dislike Draft",
+  tooltip:
+    "Drafts a respectful reply locally. Nothing is posted automatically.",
+  successTitle: "Draft ready for review",
+  successBody:
+    "Review the text before posting. This extension never submits content for you.",
+  failureTitle: "Composer unavailable",
+  failureBody:
+    "We could not find LinkedIn's native composer on this view."
+});
+
+const DRAFTS = Object.freeze({
+  posts:
+    "Personally, respectfully, this post did not work for me. That is my opinion, and I recognize others may feel differently.",
+  comments:
+    "Personally, respectfully, this comment did not work for me. That is my opinion, and I recognize others may feel differently.",
+  articles:
+    "Personally, respectfully, this article did not work for me. That is my opinion, and I recognize others may feel differently."
+});
+
+const POST_BAR_SELECTORS = [
+  ".feed-shared-social-action-bar",
+  "div[class*='feed-shared-social-action-bar']"
+];
+
+const COMMENT_BAR_SELECTORS = [
+  ".comments-comment-social-bar",
+  ".comments-comment-item__action-group",
+  "[class*='comments-comment-item__action-group']"
+];
+
+const ARTICLE_BAR_SELECTORS = [
+  ".reader-social-bar",
+  ".social-actions-bar",
+  ".article-social-actions"
+];
+
+const COMMENT_BUTTON_SELECTORS = [
+  "button[aria-label*='Comment']",
+  "button[aria-label*='comment']",
+  "button.comment-button",
+  "button[class*='comment-button']"
+];
+
+const REPLY_BUTTON_SELECTORS = [
+  "button[aria-label*='Reply']",
+  "button[aria-label*='reply']",
+  "button.comments-comment-social-bar__reply-action-button"
+];
+
+const EDITOR_SELECTORS = [
+  "[contenteditable='true'][role='textbox']",
+  "[contenteditable='true']"
+];
+
+let currentSettings = normalizeSettings(DEFAULT_SETTINGS);
+let flushTimer = null;
+const pendingRoots = new Set();
+
+function normalizeSettings(input) {
+  const surfaces = input && typeof input === "object" ? input.surfaces || {} : {};
+
+  return {
+    enabled: input && input.enabled !== false,
+    surfaces: {
+      posts: surfaces.posts !== false,
+      comments: surfaces.comments !== false,
+      articles: surfaces.articles !== false
+    }
+  };
+}
+
+function storageGet(defaults) {
+  if (!api.storage || !api.storage.local) {
+    return Promise.resolve(defaults);
+  }
+
+  if (typeof api.storage.local.get === "function" && api.storage.local.get.length <= 1) {
+    return api.storage.local.get(defaults);
+  }
+
+  return new Promise((resolve) => {
+    api.storage.local.get(defaults, (result) => {
+      if (api.runtime && api.runtime.lastError) {
+        resolve(defaults);
+        return;
+      }
+
+      resolve(result);
+    });
+  });
+}
+
+async function loadSettings() {
+  const result = await storageGet(DEFAULT_SETTINGS);
+  return normalizeSettings(result);
+}
+
 function showToast(title, body) {
-  let toast = document.querySelector('.ldb-toast');
+  if (!document.body) {
+    return;
+  }
+
+  let toast = document.querySelector(".ldb-toast");
   if (!toast) {
-    toast = document.createElement('div');
-    toast.className = 'ldb-toast';
-    toast.innerHTML = '<div class="ldb-toast-title"></div><div class="ldb-toast-body"></div>';
+    toast = document.createElement("div");
+    toast.className = "ldb-toast";
+    toast.dataset.ldbInjected = "true";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+
+    const titleNode = document.createElement("div");
+    titleNode.className = "ldb-toast-title";
+
+    const bodyNode = document.createElement("div");
+    bodyNode.className = "ldb-toast-body";
+
+    toast.append(titleNode, bodyNode);
     document.body.appendChild(toast);
   }
-  toast.querySelector('.ldb-toast-title').textContent = title;
-  toast.querySelector('.ldb-toast-body').textContent = body;
-  requestAnimationFrame(() => toast.classList.add('ldb-toast--visible'));
+
+  const titleNode = toast.querySelector(".ldb-toast-title");
+  const bodyNode = toast.querySelector(".ldb-toast-body");
+  titleNode.textContent = title;
+  bodyNode.textContent = body;
+
+  requestAnimationFrame(() => {
+    toast.classList.add("ldb-toast--visible");
+  });
+
   clearTimeout(toast._timer);
-  toast._timer = setTimeout(() => {
-    toast.classList.remove('ldb-toast--visible');
-  }, 5000);
+  toast._timer = window.setTimeout(() => {
+    toast.classList.remove("ldb-toast--visible");
+  }, 4200);
 }
 
-function addDislikeButtons() {
-  const reactionBars = document.querySelectorAll('div.feed-shared-social-action-bar.feed-shared-social-action-bar--full-width.feed-shared-social-action-bar--has-social-counts');
-  if (!reactionBars.length) {
-    console.warn('Reaction bar container not found');
-    return;
-  } else {
-    console.log(`${reactionBars.length} reaction bar container(s) found`);
+function isVisible(element) {
+  return Boolean(element && element.getClientRects().length);
+}
+
+function queryFirst(container, selectors) {
+  for (const selector of selectors) {
+    const match = container.querySelector(selector);
+    if (match) {
+      return match;
+    }
   }
-  reactionBars.forEach(bar => {
-    if (bar.querySelector('.dislike-button')) return;
-    const reactionSpan = bar.querySelector('span.reactions-react-button.feed-shared-social-action-bar__action-button.feed-shared-social-action-bar--new-padding');
-    if (!reactionSpan) {
-      console.warn('Reaction span not found in container');
+
+  return null;
+}
+
+function collectMatches(root, selectors) {
+  if (!root) {
+    return [];
+  }
+
+  const results = [];
+  const seen = new Set();
+  const roots = root.nodeType === Node.DOCUMENT_NODE ? [root.documentElement] : [root];
+
+  for (const base of roots) {
+    if (!base || typeof base.querySelectorAll !== "function") {
+      continue;
+    }
+
+    for (const selector of selectors) {
+      if (typeof base.matches === "function" && base.matches(selector) && !seen.has(base)) {
+        seen.add(base);
+        results.push(base);
+      }
+
+      for (const match of base.querySelectorAll(selector)) {
+        if (!seen.has(match)) {
+          seen.add(match);
+          results.push(match);
+        }
+      }
+    }
+  }
+
+  return results;
+}
+
+function isLikelyArticlePage() {
+  const path = window.location.pathname;
+  return path.startsWith("/pulse/") || path.startsWith("/articles/") || path.includes("/pulse/");
+}
+
+function createButton(surface) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className =
+    surface === "comments" ? "ldb-button ldb-button--comment" : "ldb-button";
+  button.dataset.ldbInjected = "true";
+  button.dataset.ldbRole = "trigger";
+  button.dataset.ldbSurface = surface;
+  button.title = COPY.tooltip;
+  button.setAttribute(
+    "aria-label",
+    `${COPY.label}. Drafts a respectful reply locally. Nothing is posted automatically.`
+  );
+
+  const icon = document.createElement("img");
+  icon.className = "ldb-button__icon";
+  icon.src = dislikeIconUrl;
+  icon.alt = "";
+  icon.setAttribute("aria-hidden", "true");
+
+  const label = document.createElement("span");
+  label.className = "ldb-button__label";
+  label.textContent = COPY.label;
+
+  button.append(icon, label);
+  return button;
+}
+
+function placeCaretAtEnd(node) {
+  const selection = window.getSelection();
+  if (!selection) {
+    return;
+  }
+
+  const range = document.createRange();
+  range.selectNodeContents(node);
+  range.collapse(false);
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+function dispatchEditorInput(editor, text) {
+  try {
+    editor.dispatchEvent(
+      new InputEvent("input", {
+        bubbles: true,
+        data: text,
+        inputType: "insertText"
+      })
+    );
+  } catch (error) {
+    editor.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+}
+
+function applyDraft(editor, text) {
+  const paragraph = document.createElement("p");
+  paragraph.textContent = text;
+  editor.replaceChildren(paragraph);
+  editor.focus();
+  placeCaretAtEnd(paragraph);
+  dispatchEditorInput(editor, text);
+}
+
+function findEditor(scope) {
+  const editors = collectMatches(scope, EDITOR_SELECTORS).filter(isVisible);
+  return editors.length ? editors[editors.length - 1] : null;
+}
+
+function openDraftComposer({ opener, editorScope, draftText }) {
+  opener();
+
+  let attempts = 0;
+  const poller = window.setInterval(() => {
+    const editor = findEditor(editorScope);
+    if (editor) {
+      window.clearInterval(poller);
+      applyDraft(editor, draftText);
+      showToast(COPY.successTitle, COPY.successBody);
       return;
     }
-    const dislikeButton = document.createElement('div');
-    dislikeButton.className = 'dislike-button';
-    dislikeButton.innerHTML = `
-      <img src="${dislikeIconUrl}" alt="Dislike" class="dislike-icon" />
-      <span class="dislike-label">Dislike</span>
-    `;
-    dislikeButton.addEventListener('click', function() {
-      try {
-        const post = bar.closest('.feed-shared-update-v2');
-        if (!post) {
-          throw new Error('Post container not found');
-        } else {
-          console.log('Post container found');
+
+    attempts += 1;
+    if (attempts >= 14) {
+      window.clearInterval(poller);
+      showToast(COPY.failureTitle, COPY.failureBody);
+    }
+  }, 220);
+}
+
+function refreshRoot(root) {
+  if (!root || typeof root.querySelectorAll !== "function") {
+    return;
+  }
+
+  for (const node of root.querySelectorAll("[data-ldb-injected='true']")) {
+    if (!node.classList.contains("ldb-toast")) {
+      node.remove();
+    }
+  }
+}
+
+function renderPostButtons(root) {
+  if (!currentSettings.enabled || !currentSettings.surfaces.posts) {
+    return;
+  }
+
+  for (const bar of collectMatches(root, POST_BAR_SELECTORS)) {
+    if (bar.querySelector("[data-ldb-role='trigger']")) {
+      continue;
+    }
+
+    const post = bar.closest(".feed-shared-update-v2, article, [data-urn^='urn:li:activity:']");
+    if (!post) {
+      continue;
+    }
+
+    const commentButton = queryFirst(post, COMMENT_BUTTON_SELECTORS);
+    if (!commentButton) {
+      continue;
+    }
+
+    const button = createButton("posts");
+    button.addEventListener("click", () => {
+      openDraftComposer({
+        opener: () => commentButton.click(),
+        editorScope: post,
+        draftText: DRAFTS.posts
+      });
+    });
+
+    bar.appendChild(button);
+  }
+}
+
+function renderCommentButtons(root) {
+  if (!currentSettings.enabled || !currentSettings.surfaces.comments) {
+    return;
+  }
+
+  for (const bar of collectMatches(root, COMMENT_BAR_SELECTORS)) {
+    if (bar.querySelector("[data-ldb-role='trigger']")) {
+      continue;
+    }
+
+    const comment = bar.closest(".comments-comment-item");
+    if (!comment) {
+      continue;
+    }
+
+    const replyButton = queryFirst(comment, REPLY_BUTTON_SELECTORS);
+    if (!replyButton) {
+      continue;
+    }
+
+    const button = createButton("comments");
+    button.addEventListener("click", () => {
+      openDraftComposer({
+        opener: () => replyButton.click(),
+        editorScope: comment,
+        draftText: DRAFTS.comments
+      });
+    });
+
+    bar.appendChild(button);
+  }
+}
+
+function renderArticleButtons(root) {
+  if (!currentSettings.enabled || !currentSettings.surfaces.articles || !isLikelyArticlePage()) {
+    return;
+  }
+
+  for (const bar of collectMatches(root, ARTICLE_BAR_SELECTORS)) {
+    if (bar.querySelector("[data-ldb-role='trigger']")) {
+      continue;
+    }
+
+    const commentButton = queryFirst(bar, COMMENT_BUTTON_SELECTORS);
+    if (!commentButton) {
+      continue;
+    }
+
+    const articleRoot = bar.closest("article, main, body") || document;
+    const button = createButton("articles");
+    button.addEventListener("click", () => {
+      openDraftComposer({
+        opener: () => commentButton.click(),
+        editorScope: articleRoot,
+        draftText: DRAFTS.articles
+      });
+    });
+
+    bar.appendChild(button);
+  }
+}
+
+function renderRoot(root) {
+  if (!root || typeof root.querySelectorAll !== "function") {
+    return;
+  }
+
+  refreshRoot(root);
+
+  if (!currentSettings.enabled) {
+    return;
+  }
+
+  renderPostButtons(root);
+  renderCommentButtons(root);
+  renderArticleButtons(root);
+}
+
+function queueRender(root) {
+  pendingRoots.add(root && root.nodeType === Node.ELEMENT_NODE ? root : document);
+
+  clearTimeout(flushTimer);
+  flushTimer = window.setTimeout(() => {
+    const roots = Array.from(pendingRoots);
+    pendingRoots.clear();
+    roots.forEach(renderRoot);
+  }, 120);
+}
+
+function handleStorageChange(changes, areaName) {
+  if (areaName !== "local") {
+    return;
+  }
+
+  const next = {
+    enabled:
+      changes.enabled && Object.prototype.hasOwnProperty.call(changes.enabled, "newValue")
+        ? changes.enabled.newValue
+        : currentSettings.enabled,
+    surfaces:
+      changes.surfaces && Object.prototype.hasOwnProperty.call(changes.surfaces, "newValue")
+        ? changes.surfaces.newValue
+        : currentSettings.surfaces
+  };
+
+  currentSettings = normalizeSettings(next);
+  queueRender(document);
+}
+
+function startObserver() {
+  if (!document.body) {
+    return;
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          queueRender(node);
         }
-        const commentButton = post.querySelector('button.artdeco-button.artdeco-button--muted.artdeco-button--3.artdeco-button--tertiary.ember-view.social-actions-button.comment-button.flex-wrap');
-        if (!commentButton){
-          throw new Error('Comment button not found');
-        } else {
-          console.log('Comment button found');
-        }
-        commentButton.click();
-        showToast("Please remember to always be respectful on LinkedIn.", "Personally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.");
-        const dislikeMsg = "Personally, respectfully, I do not enjoy this post very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.";
-        let attempts = 0;
-        const pollEditor = setInterval(() => {
-          const editor = post.querySelector('[contenteditable="true"]');
-          if (editor) {
-            clearInterval(pollEditor);
-            editor.focus();
-            editor.innerHTML = '<p>' + dislikeMsg + '</p>';
-            editor.dispatchEvent(new InputEvent('input', {bubbles: true}));
-          } else if (++attempts > 10) {
-            clearInterval(pollEditor);
-            console.warn('Comment editor not found after polling');
-          }
-        }, 300);
-      } catch (error) {
-        console.error('Dislike action failed:', error);
       }
-    });
-    reactionSpan.parentNode.insertBefore(dislikeButton, reactionSpan.nextSibling);
+    }
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
   });
 }
 
-function addCommentDislikeButtons() {
-  const commentBars = document.querySelectorAll('.comments-comment-social-bar, .comments-comment-item__action-group');
-  commentBars.forEach(bar => {
-    if (bar.querySelector('.dislike-button')) return;
-    const dislikeButton = document.createElement('button');
-    dislikeButton.className = 'dislike-button dislike-button--comment';
-    dislikeButton.innerHTML = `
-      <img src="${dislikeIconUrl}" alt="Dislike" class="dislike-icon" />
-      <span class="dislike-label">Dislike</span>
-    `;
-    dislikeButton.addEventListener('click', function() {
-      showToast("Please remember to always be respectful on LinkedIn.", "Personally, respectfully, I do not enjoy this comment very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.");
-      const comment = bar.closest('.comments-comment-item');
-      if (!comment) return;
-      const replyBtn = comment.querySelector('button.comments-comment-social-bar__reply-action-button, button[aria-label*="Reply"]');
-      if (replyBtn) {
-        replyBtn.click();
-        const dislikeMsg = "Personally, respectfully, I do not enjoy this comment very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.";
-        let attempts = 0;
-        const pollEditor = setInterval(() => {
-          const editor = comment.querySelector('[contenteditable="true"]');
-          if (editor) {
-            clearInterval(pollEditor);
-            editor.focus();
-            editor.innerHTML = '<p>' + dislikeMsg + '</p>';
-            editor.dispatchEvent(new InputEvent('input', {bubbles: true}));
-          } else if (++attempts > 10) {
-            clearInterval(pollEditor);
-          }
-        }, 300);
-      }
-    });
-    bar.appendChild(dislikeButton);
-  });
+async function init() {
+  currentSettings = await loadSettings();
+  queueRender(document);
+
+  if (api.storage && api.storage.onChanged) {
+    api.storage.onChanged.addListener(handleStorageChange);
+  }
+
+  startObserver();
 }
 
-function addArticleDislikeButtons() {
-  if (!window.location.pathname.startsWith('/pulse/')) return;
-  const articleBars = document.querySelectorAll('.reader-social-bar, .social-actions-bar, .article-social-actions');
-  articleBars.forEach(bar => {
-    if (bar.querySelector('.dislike-button')) return;
-    const dislikeButton = document.createElement('div');
-    dislikeButton.className = 'dislike-button';
-    dislikeButton.innerHTML = `
-      <img src="${dislikeIconUrl}" alt="Dislike" class="dislike-icon" />
-      <span class="dislike-label">Dislike</span>
-    `;
-    dislikeButton.addEventListener('click', function() {
-      showToast("Please remember to always be respectful on LinkedIn.", "Personally, respectfully, I do not enjoy this article very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.");
-      const commentBtn = bar.querySelector('button[aria-label*="Comment"], button[aria-label*="comment"]');
-      if (commentBtn) {
-        commentBtn.click();
-        const dislikeMsg = "Personally, respectfully, I do not enjoy this article very much. However, that's my own opinion, not objective fact, and I recognise that everyone is entitled to their own perspective.";
-        let attempts = 0;
-        const pollEditor = setInterval(() => {
-          const editor = document.querySelector('[contenteditable="true"]');
-          if (editor) {
-            clearInterval(pollEditor);
-            editor.focus();
-            editor.innerHTML = '<p>' + dislikeMsg + '</p>';
-            editor.dispatchEvent(new InputEvent('input', {bubbles: true}));
-          } else if (++attempts > 10) {
-            clearInterval(pollEditor);
-          }
-        }, 300);
-      }
-    });
-    bar.appendChild(dislikeButton);
-  });
-}
-
-// ----- Execution -----
-addDislikeButtons();
-addCommentDislikeButtons();
-addArticleDislikeButtons();
-let debounceTimer = null;
-const observer = new MutationObserver(() => {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
-    addDislikeButtons();
-    addCommentDislikeButtons();
-    addArticleDislikeButtons();
-  }, 200);
-});
-observer.observe(document.body, {
-  childList: true,
-  subtree: true,
-  attributes: false,
-  characterData: false
-});
+void init();
